@@ -46411,6 +46411,7 @@ function run() {
                 required: true
             });
             try {
+                core.info(`Try to restore cache from [${primaryKey}, ${restoreKey}]`);
                 const cacheKey = yield cache.restoreCache(cachePaths, primaryKey, [
                     restoreKey
                 ]);

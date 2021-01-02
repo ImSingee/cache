@@ -44493,6 +44493,7 @@ function run() {
                 utils.logWarning(`Error retrieving key from state.`);
                 return;
             }
+            core.info(`Cache will save to ${primaryKey}`);
             if (utils.isExactKeyMatch(primaryKey, state)) {
                 core.info(`Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
                 return;

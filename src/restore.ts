@@ -36,6 +36,10 @@ async function run(): Promise<void> {
         });
 
         try {
+            core.info(
+                `Try to restore cache from [${primaryKey}, ${restoreKey}]`
+            );
+
             const cacheKey = await cache.restoreCache(cachePaths, primaryKey, [
                 restoreKey
             ]);

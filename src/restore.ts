@@ -22,7 +22,13 @@ async function run(): Promise<void> {
             return;
         }
 
-        const primaryKey = core.getInput(Inputs.Key, { required: true });
+        const baseKey = core.getInput(Inputs.Key, { required: true });
+
+        const restoreKey = `${baseKey}-`;
+
+        const now = new Date().getTime();
+        const primaryKey = `${baseKey}-${now}`;
+
         core.saveState(State.CachePrimaryKey, primaryKey);
 
         const cachePaths = utils.getInputAsArray(Inputs.Path, {
@@ -30,9 +36,12 @@ async function run(): Promise<void> {
         });
 
         try {
-            const cacheKey = await cache.restoreCache(cachePaths, primaryKey);
+            const cacheKey = await cache.restoreCache(cachePaths, primaryKey, [
+                restoreKey
+            ]);
+
             if (!cacheKey) {
-                core.info(`Cache not found for primary key: ${primaryKey}`);
+                core.info(`Cache not found for key: ${baseKey}`);
                 return;
             }
 

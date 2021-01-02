@@ -25,32 +25,20 @@ async function run(): Promise<void> {
         const primaryKey = core.getInput(Inputs.Key, { required: true });
         core.saveState(State.CachePrimaryKey, primaryKey);
 
-        const restoreKeys = utils.getInputAsArray(Inputs.RestoreKeys);
         const cachePaths = utils.getInputAsArray(Inputs.Path, {
             required: true
         });
 
         try {
-            const cacheKey = await cache.restoreCache(
-                cachePaths,
-                primaryKey,
-                restoreKeys
-            );
+            const cacheKey = await cache.restoreCache(cachePaths, primaryKey);
             if (!cacheKey) {
-                core.info(
-                    `Cache not found for input keys: ${[
-                        primaryKey,
-                        ...restoreKeys
-                    ].join(", ")}`
-                );
+                core.info(`Cache not found for primary key: ${primaryKey}`);
                 return;
             }
 
             // Store the matched cache key
             utils.setCacheState(cacheKey);
-
-            const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
-            utils.setCacheHitOutput(isExactKeyMatch);
+            utils.setCacheHitOutput(true);
 
             core.info(`Cache restored from key: ${cacheKey}`);
         } catch (error) {

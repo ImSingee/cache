@@ -45,8 +45,8 @@ jobs:
       run: npm run format-check
     - name: ESLint Check
       run: npm run lint
-    - name: Build & Test
-      run: npm run test
+#    - name: Build & Test
+#      run: npm run test
     - name: Ensure dist/ folder is up-to-date
       if: ${{ runner.os == 'Linux' }}
       shell: bash

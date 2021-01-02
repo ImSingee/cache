@@ -1,3 +1,5 @@
+.idea
+
 __tests__/runner/*
 
 node_modules/

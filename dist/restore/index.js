@@ -46404,23 +46404,18 @@ function run() {
             }
             const primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
             core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
-            const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
                 required: true
             });
             try {
-                const cacheKey = yield cache.restoreCache(cachePaths, primaryKey, restoreKeys);
+                const cacheKey = yield cache.restoreCache(cachePaths, primaryKey);
                 if (!cacheKey) {
-                    core.info(`Cache not found for input keys: ${[
-                        primaryKey,
-                        ...restoreKeys
-                    ].join(", ")}`);
+                    core.info(`Cache not found for primary key: ${primaryKey}`);
                     return;
                 }
                 // Store the matched cache key
                 utils.setCacheState(cacheKey);
-                const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
-                utils.setCacheHitOutput(isExactKeyMatch);
+                utils.setCacheHitOutput(true);
                 core.info(`Cache restored from key: ${cacheKey}`);
             }
             catch (error) {
